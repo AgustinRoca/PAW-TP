@@ -1,0 +1,17 @@
+alter table staff rename to doctor;
+alter table doctor rename column staff_id to doctor_id;
+alter table system_staff_specialty rename to system_doctor_specialty;
+alter table system_staff_specialty_staff rename column staff_id to doctor_id;
+alter table system_staff_specialty_staff rename to system_doctor_specialty_doctor;
+alter table appointment rename column staff_id to doctor_id;
+alter table workday rename column staff_id to doctor_id;
+alter table doctor rename constraint staff_office to doctor_office;
+alter table doctor rename constraint staff_users_users_id_fk to doctor_users_users_id_fk;
+alter index staff_pk rename to doctor_pk;
+alter index staff_staff_id_uindex rename to doctor_doctor_id_uindex;
+alter index staff_user_id_index rename to doctor_user_id_index;
+alter table appointment rename constraint appointment_staff_staff_id_fk to appointment_doctor_doctor_id_fk;
+alter index system_staff_specialty_staff_pk rename to system_doctor_specialty_doctor_pk;
+alter table system_doctor_specialty_doctor rename constraint specialty_staff_system_specialty to specialty_doctor_system_specialty;
+alter table system_doctor_specialty_doctor rename constraint specialty_staff_staff to specialty_doctor_doctor;
+alter table workday rename constraint workday_staff_staff_id_fk to workday_doctor_doctor_id_fk;

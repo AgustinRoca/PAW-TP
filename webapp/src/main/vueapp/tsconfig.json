@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "lib": [
+            "ESNext",
+            "ESNext.AsyncIterable",
+            "DOM"
+        ],
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "esModuleInterop": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "allowUnreachableCode": false,
+        "noEmit": true,
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "./src/*"
+            ],
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        "typeRoots" : ["./src/types"]
+    },
+    "include": [
+        "./**/*.ts",
+        "./**/*.vue"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

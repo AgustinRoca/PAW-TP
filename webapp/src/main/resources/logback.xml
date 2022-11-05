@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="defaultPattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n"/>
+
+    <appender name="root-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw.2020.c1.grupo-9.root.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+    <appender name="persistence-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw.2020.c1.grupo-9.persistence.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+    <appender name="webapp-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw.2020.c1.grupo-9.webapp.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+    <appender name="models-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw.2020.c1.grupo-9.models.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+    <appender name="services-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw.2020.c1.grupo-9.services.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="ar.edu.itba.paw.persistence" level="INFO" additivity="false">
+        <appender-ref ref="persistence-appender"/>
+    </logger>
+
+    <logger name="ar.edu.itba.paw.webapp" level="INFO" additivity="false">
+        <appender-ref ref="webapp-appender"/>
+    </logger>
+
+    <logger name="ar.edu.itba.paw.models" level="INFO" additivity="false">
+        <appender-ref ref="models-appender"/>
+    </logger>
+
+    <logger name="ar.edu.itba.paw.services" level="INFO" additivity="false">
+        <appender-ref ref="services-appender"/>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="root-appender"/>
+    </root>
+</configuration>

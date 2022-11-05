@@ -1,0 +1,1558 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API",
+        "description": "API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "loginUser": {
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "required": true
+                    }
+                }
+            },
+
+            "country": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "province": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "countryId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "locality": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "provinceId": {
+                        "type": "string"
+                    }
+                }
+            },
+
+            "user": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "surname": {
+                        "type": "string"
+                    },
+                    "verified": {
+                        "type": "boolean"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "user-me": {
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/user"
+                    },
+                    "doctors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/doctor"
+                        }
+                    },
+                    "patients": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/patient"
+                        }
+                    }
+                }
+            },
+            "createUserDoctor": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "nullable": false
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": false,
+                        "minLength": 8,
+                        "maxLength": 100
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "nullable": false,
+                        "minLength": 2,
+                        "maxLength": 20
+                    },
+                    "surname": {
+                        "type": "string",
+                        "nullable": false,
+                        "minLength": 2,
+                        "maxLength": 20
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "registrationNumber": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "street": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "localityId": {
+                        "type": "number",
+                        "nullable": false
+                    }
+                },
+                "required": [
+                    "email",
+                    "password",
+                    "firstName",
+                    "surname",
+                    "street",
+                    "localityId"
+                ]
+            },
+            "createUserPatient": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "nullable": false
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": false,
+                        "minLength": 8,
+                        "maxLength": 100
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "nullable": false,
+                        "minLength": 2,
+                        "maxLength": 20
+                    },
+                    "surname": {
+                        "type": "string",
+                        "nullable": false,
+                        "minLength": 2,
+                        "maxLength": 20
+                    },
+                    "phone": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "password",
+                    "firstName",
+                    "surname"
+                ]
+            },
+            "updateUser": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "nullable": false
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "surname": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "profilePicture": {
+                        "type": "string",
+                        "format": "base64"
+                    }
+                }
+            },
+
+            "office": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "street": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "localityId": {
+                        "type": "integer"
+                    }
+                }
+            },
+
+            "doctor": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "email",
+                        "format": "email"
+                    },
+                    "registrationNumber": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/user"
+                    },
+                    "office": {
+                        "$ref": "#/components/schemas/office"
+                    },
+                    "specialtyIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            "doctorSpecialty": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "updateDoctor": {
+                "properties": {
+                    "phone": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "email",
+                        "format": "email",
+                        "nullable": false
+                    },
+                    "specialtyIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "nullable": false,
+                        "minLength": 1
+                    }
+                }
+            },
+
+            "patient": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "type": "integer"
+                    },
+                    "officeId": {
+                        "type": "integer"
+                    }
+                }
+            },
+
+            "workday": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "start": {
+                        "type": "object",
+                        "properties": {
+                            "hour": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 23
+                            },
+                            "minute": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 59
+                            }
+                        }
+                    },
+                    "end": {
+                        "type": "object",
+                        "properties": {
+                            "hour": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 23
+                            },
+                            "minute": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 59
+                            }
+                        }
+                    },
+                    "day": {
+                        "type": "string",
+                        "enum": [
+                            "MONDAY",
+                            "TUESDAY",
+                            "WEDNESDAY",
+                            "THURSDAY",
+                            "FRIDAY",
+                            "SATURDAY",
+                            "SUNDAY"
+                        ]
+                    },
+                    "doctorId": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "createWorkday": {
+                "properties": {
+                    "start": {
+                        "type": "object",
+                        "properties": {
+                            "hour": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 23,
+                                "required": true
+                            },
+                            "minute": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 59,
+                                "required": true
+                            }
+                        },
+                        "required": true
+                    },
+                    "end": {
+                        "type": "object",
+                        "properties": {
+                            "hour": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 23,
+                                "required": true
+                            },
+                            "minute": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 59,
+                                "required": true
+                            }
+                        },
+                        "required": true
+                    },
+                    "day": {
+                        "type": "string",
+                        "enum": [
+                            "MONDAY",
+                            "TUESDAY",
+                            "WEDNESDAY",
+                            "THURSDAY",
+                            "FRIDAY",
+                            "SATURDAY",
+                            "SUNDAY"
+                        ],
+                        "required": true
+                    }
+                }
+            },
+
+            "appointment": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PENDING",
+                            "COMPLETE",
+                            "CANCELLED",
+                            "WAITING",
+                            "SEEN"
+                        ]
+                    },
+                    "date_from": {
+                        "type": "long",
+                        "format": "epoch millis"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "motive": {
+                        "type": "string"
+                    },
+                    "patientId": {
+                        "type": "integer"
+                    },
+                    "doctorId": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "createAppointment": {
+                "properties": {
+                    "date_from": {
+                        "type": "long",
+                        "format": "epoch millis",
+                        "required": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "motive": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "doctorId": {
+                        "type": "integer",
+                        "required": true
+                    }
+                }
+            },
+            "appointmentTimeslot": {
+                "properties": {
+                    "hour": {
+                        "type": "integer"
+                    },
+                    "minute": {
+                        "type": "integer"
+                    },
+                    "duration": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "appointmentTimeslotDate": {
+                "properties": {
+                    "date": {
+                        "type": "object",
+                        "properties": {
+                            "day": {
+                                "type": "integer"
+                            },
+                            "month": {
+                                "type": "integer"
+                            },
+                            "year": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "timeslots": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "$ref": "#/components/schemas/appointmentTimeslot"
+                            }
+                        ]
+                    }
+                }
+            },
+
+            "error": {
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "get-doctor": {
+                "description": "Successful",
+                "content": {
+                    "application/vnd.doctor.get.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/doctor"
+                        }
+                    }
+                },
+                "headers": {
+                    "Link": {
+                        "schema": {
+                            "type": "string",
+                            "description": "Returns a string formatted as specified in RFC 8288 with pagination information ONLY if there was at least 1 item found. Always has a rel: first and last, and may provide a link to next and/or previous"
+                        }
+                    },
+                    "Total-Items": {
+                        "schema": {
+                            "type": "integer",
+                            "description": "Returns a number indicating the total number of items found"
+                        }
+                    }
+                }
+            },
+            "get-user": {
+                "description": "Successful",
+                "content": {
+                    "application/vnd.user.get.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/user"
+                        }
+                    }
+                }
+            },
+            "get-user-me": {
+                "description": "Successful",
+                "content": {
+                    "application/vnd.user.me.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/user-me"
+                        }
+                    }
+                }
+            },
+            "get-appointment": {
+                "description": "Successful",
+                "content": {
+                    "application/vnd.appointment.get.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/appointment"
+                        }
+                    }
+                }
+            },
+            "get-workday": {
+                "description": "Successful",
+                "content": {
+                    "application/vnd.workday.get.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/workday"
+                        }
+                    }
+                }
+            },
+            "error-400": {
+                "description": "Bad request",
+                "content": {
+                    "application/vnd.error.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/error"
+                        }
+                    }
+                }
+            },
+            "error-401": {
+                "description": "Unauthorized",
+                "content": {
+                    "application/vnd.error.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/error"
+                        }
+                    }
+                }
+            },
+            "error-403": {
+                "description": "Forbidden",
+                "content": {
+                    "application/vnd.error.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/error"
+                        }
+                    }
+                }
+            },
+            "error-404": {
+                "description": "Not found",
+                "content": {
+                    "application/vnd.error.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/error"
+                        }
+                    }
+                }
+            },
+            "error-422": {
+                "description": "Unprocessable entity",
+                "content": {
+                    "application/vnd.error.v1+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "paths": {
+        "/login": {
+            "post": {
+                "summary": "Attempts to login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.login.post.v1+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/loginUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-user-me"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/error-401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "summary": "Refreshes the JWT tokens",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-doctor"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "summary": "Removes the refresh token and instructs the client to invalidate the JWT cookies",
+                "responses": {
+                    "204": {
+                        "description": "Successful."
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    }
+                }
+            }
+        },
+        "/verify/{token}": {
+            "post": {
+                "summary": "Verifies the email",
+                "responses": {
+                    "204": {
+                        "description": "Successful"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/doctors": {
+            "get": {
+                "summary": "List all doctors",
+                "parameters": [
+                    {
+                        "name": {
+                            "type": "string"
+                        },
+                        "page": {
+                            "type": "number",
+                            "minimum": 1,
+                            "required": true
+                        },
+                        "perPage": {
+                            "type": "number",
+                            "minimum": 10,
+                            "maximum": 100,
+                            "required": false
+                        },
+                        "specialties": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            },
+                            "minLength": 1,
+                            "required": false
+                        },
+                        "localities": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            },
+                            "minLength": 1,
+                            "required": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.doctor.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/doctor"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/doctors/{id}": {
+            "get": {
+                "summary": "Gets a specific doctor",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-doctor"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Updates a doctor",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.doctor.update.v1+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateDoctor"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-doctor"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/error-401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "summary": "Returns the logged user",
+
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-user-me"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.user.doctor.create.v1+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createUserDoctor"
+                            }
+                        },
+                        "application/vnd.user.patient.create.v1+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createUserPatient"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/get-user-me"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/error-409"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "summary": "Gets a specific user",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-user"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Updates a user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.user.update.v1+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-user"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-404"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    }
+                }
+            }
+        },
+        "/users/{id}/picture": {
+            "get": {
+                "summary": "Gets a user's profile picture",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The image"
+                    },
+                    "404": {
+                    }
+                }
+            },
+            "post": {
+                "summary": "Sets the user's profile picture",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/error-401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/appointments": {
+            "get": {
+                "summary": "List all the appointments of the logged user",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "from_year",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 2000,
+                            "maximum": 2100
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from_month",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 12
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from_day",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 31
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to_year",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 2000,
+                            "maximum": 2100
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to_month",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 12
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to_day",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 31
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.appointment.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/appointment"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/error-401"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates an appointment",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.appointment.create.v1+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createAppointment"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/get-appointment"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/appointments/{id}": {
+            "get": {
+                "summary": "Gets a specific appointment",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-appointment"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletes an appointment",
+                "responses": {
+                    "204": {
+                        "description": "Successful"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/specialties": {
+            "get": {
+                "summary": "List all doctor specialties",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.specialty.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/doctorSpecialty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/countries": {
+            "get": {
+                "summary": "List all countries",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.country.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/country"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/countries/{id}": {
+            "get": {
+                "summary": "Gets a specific country",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/vnd.country.get.v1+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/country"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/countries/{countryId}/provinces": {
+            "get": {
+                "summary": "List all provinces of a given country",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/vnd.province.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/province"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/countries/{countryId}/provinces/{id}": {
+            "get": {
+                "summary": "Gets a specific province",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/vnd.province.get.v1+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/province"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/countries/{countryId}/provinces/{provinceId}/localities": {
+            "get": {
+                "summary": "List all localities of a given province",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.locality.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/locality"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/localities": {
+            "get": {
+                "summary": "List all localities",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.locality.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/locality"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/countries/{countryId}/provinces/{provinceId}/localities/{id}": {
+            "get": {
+                "summary": "Gets a specific locality",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/vnd.locality.get.v1+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/locality"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/workdays": {
+            "get": {
+                "summary": "If it is a doctor, then it lists all its workdays, if it is not, then it returns 403",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.workday.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/workday"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a workday or a collection of them",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.workday.list.create.v1+json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/createWorkday"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.workday.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/workday"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/error-403"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        },
+        "/workdays/{id}": {
+            "get": {
+                "summary": "Get a specific workday",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-workday"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletes a workday",
+                "responses": {
+                    "204": {
+                        "description": "Successful"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/error-404"
+                    }
+                }
+            }
+        },
+        "/appointmentTimeSlots": {
+            "get": {
+                "summary": "List all appointment time slots for a given doctor",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "doctor_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from_year",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 2000,
+                            "maximum": 2100
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from_month",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 12
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from_day",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 31
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to_year",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 2000,
+                            "maximum": 2100
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to_month",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 12
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to_day",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 31
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+
+                        "content": {
+                            "application/vnd.appointment-timeslot.list.get.v1+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/appointmentTimeslotDate"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error-400"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error-422"
+                    }
+                }
+            }
+        }
+    }
+}

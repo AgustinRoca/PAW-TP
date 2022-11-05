@@ -1,0 +1,3 @@
+INSERT INTO public.appointment (appointment_id, status, patient_id, doctor_id, from_date, motive, message, locale, was_notification_email_sent) VALUES (16, 'PENDING', 3, 56, '2020-06-26 09:00:00.000000', null, null, 'es', true);
+INSERT INTO public.appointment (appointment_id, status, patient_id, doctor_id, from_date, motive, message, locale, was_notification_email_sent) VALUES (17, 'PENDING', 1, 56, '2020-07-05 09:00:00.000000', null, null, 'es', true);
+INSERT INTO public.appointment (appointment_id, status, patient_id, doctor_id, from_date, motive, message, locale, was_notification_email_sent) VALUES (13, 'PENDING', 7, 167, '2020-05-14 09:00:00.000000', null, null, 'es', true);
